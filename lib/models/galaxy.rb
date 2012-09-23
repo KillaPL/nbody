@@ -19,11 +19,11 @@ class Galaxy
   end
 
   def distance_between(body_1, star_2)
-    Math.sqrt((body_1.x - star_2.x) ** 2 + (body_1.y - star_2.y) ** 2)
+    [Math.sqrt((body_1.x - star_2.x) ** 2 + (body_1.y - star_2.y) ** 2), @force_change_distance].max
   end
 
   def force_between(star_1, star_2, distance)
-    1.0 * @gravity_constant * star_1.mass * star_2.mass / [distance, @force_change_distance].max
+    1.0 * @gravity_constant * star_1.mass * star_2.mass / distance
   end
 
   def update_forces_between(star_1, star_2)
@@ -62,18 +62,20 @@ class Galaxy
   end
 
   def update_box_forces_between(box, star)
-    if box.width / distance_between(box, star) < @barnes_hut_ratio
-      count_actual_force_between(box, star)
-    else
-      update_box_forces_between(box.top_left_child, star) if box.top_left_child
-      update_box_forces_between(box.top_right_child, star) if box.top_right_child
-      update_box_forces_between(box.bottom_left_child, star) if box.bottom_left_child
-      update_box_forces_between(box.bottom_right_child, star) if box.bottom_right_child
-    end 
+    distance = distance_between(box, star)
+    if box.width / distance < @barnes_hut_ratio
+      count_actual_force_between(box, star, distance)
+    elsif box.internal?
+      update_box_forces_between(box.top_left_child, star)
+      update_box_forces_between(box.top_right_child, star)
+      update_box_forces_between(box.bottom_left_child, star)
+      update_box_forces_between(box.bottom_right_child, star)
+    elsif box.external?
+      count_actual_force_between(box, star, distance)
+    end
   end
 
-  def count_actual_force_between(box, star)
-    distance = distance_between(box, star)
+  def count_actual_force_between(box, star, distance)
     force = force_between(box, star, distance) / distance
     force_x = force * (box.x - star.x)
     force_y = force * (box.y - star.y)

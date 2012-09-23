@@ -31,7 +31,9 @@ class GameWindow < Gosu::Window
   end
 
   def update
+    a = Time.now
     @galaxy.calculate_forces(@galaxy_movement)
+    p 1000 * (Time.now - a)
     @galaxy.move_stars
     @galaxy.join_stars_that_are_closer_than(@galaxy_joining_distance)
   end
