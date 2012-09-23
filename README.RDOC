@@ -1,0 +1,6 @@
+TODO:
+1. Code cleanup
+2. Constants class, move repeating constants there
+3. Write benchark for galaxy creating and calculating forces
+4. Change some fields to integers, should be a lot faster
+5. try using jruby + multithreading
