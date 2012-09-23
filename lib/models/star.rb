@@ -2,10 +2,10 @@ class Star
   attr_accessor :x, :y, :mass, :size, :vx, :vy
 
   def initialize(x, y, mass, vx = 0, vy = 0)
-    @x = x.to_i
-    @y = y.to_i
+    @x = x
+    @y = y
     @mass = mass
-    @size = Math.log(mass*0.01 + 2.2).to_i
+    @size = Math.log(mass*0.01 + 2.2)
     @vx = vx
     @vy = vy
     @ax = 0
@@ -27,8 +27,8 @@ class Star
   end
 
   def +(another_star)
-    new_x = 0.5 * (self.x + another_star.x)
-    new_y = 0.5 * (self.y + another_star.y)
+    new_x = (0.5 * (self.x + another_star.x))
+    new_y = (0.5 * (self.y + another_star.y))
     new_mass = self.mass + another_star.mass
     new_vx = (self.vx * self.mass + another_star.vx * another_star.mass) / new_mass
     new_vy = (self.vy * self.mass + another_star.vy * another_star.mass) / new_mass
