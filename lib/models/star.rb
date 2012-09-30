@@ -15,8 +15,8 @@ class Star
   def self.generate_random(galaxy_size_x, galaxy_size_y, distribution)
     case distribution
     when :unitary
-      random_x = galaxy_size_x * ( rand - 0.5 ) / 2.0
-      random_y = galaxy_size_y * ( rand - 0.5 ) / 2.0
+      random_x = galaxy_size_x * rand
+      random_y = galaxy_size_y * rand
     when :normal
       u = rand
       v = rand

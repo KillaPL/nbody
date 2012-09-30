@@ -4,11 +4,10 @@ require File.expand_path(File.dirname(__FILE__) + "/box.rb")
 class Galaxy
   attr_accessor :stars, :box
 
-  def initialize(size, stars_count, gravity_constant, force_change_distance, stars_distribution, barnes_hut_ratio)
+  def initialize(size, stars_count, gravity_constant, stars_distribution, barnes_hut_ratio)
     @size_x = size
     @size_y = size
     @gravity_constant = gravity_constant
-    @force_change_distance = force_change_distance
     @barnes_hut_ratio = barnes_hut_ratio
 
     @stars = []
@@ -19,7 +18,7 @@ class Galaxy
   end
 
   def distance_between(body_1, star_2)
-    [Math.sqrt((body_1.x - star_2.x) ** 2 + (body_1.y - star_2.y) ** 2), @force_change_distance].max
+    Math.sqrt((body_1.x - star_2.x) ** 2 + (body_1.y - star_2.y) ** 2)
   end
 
   def force_between(star_1, star_2, distance)
@@ -28,11 +27,15 @@ class Galaxy
 
   def update_forces_between(star_1, star_2)
     distance = distance_between(star_1, star_2)
-    force = force_between(star_1, star_2, distance)
-    force_x = force * (star_1.x - star_2.x) / distance
-    force_y = force * (star_1.y - star_2.y) / distance
-    star_1.update_acceleration(-force_x, -force_y)
-    star_2.update_acceleration(force_x, force_y)
+
+    if distance > star_1.size + star_2.size
+      force = force_between(star_1, star_2, distance)
+      force_x = force * (star_1.x - star_2.x) / distance
+      force_y = force * (star_1.y - star_2.y) / distance
+      star_1.update_acceleration(-force_x, -force_y)
+      star_2.update_acceleration(force_x, force_y)
+    else
+    end
   end
 
   def calculate_forces(algorithm)
@@ -63,7 +66,8 @@ class Galaxy
 
   def update_box_forces_between(box, star)
     distance = distance_between(box, star)
-    if box.width / distance < @barnes_hut_ratio
+    if distance.zero?
+    elsif box.width / distance < @barnes_hut_ratio
       count_actual_force_between(box, star, distance)
     elsif box.internal?
       update_box_forces_between(box.top_left_child, star)
@@ -84,17 +88,6 @@ class Galaxy
 
   def move_stars
     stars.map(&:move)
-  end
-
-  def join_stars_that_are_closer_than(joining_distance)
-    each_stars_pair do |s1, s2|
-      if distance_between(s1, s2) < joining_distance
-        stars << s1 + s2
-        stars.delete(s1)
-        stars.delete(s2)
-        break
-      end
-    end
   end
 
   def each_stars_pair

@@ -9,20 +9,16 @@ class GameWindow < Gosu::Window
     @window_x = 1000
     @window_y = 1000
     @galaxy_size = 1000
-    @scale = 1.0 * @window_x / @galaxy_size
-    @galaxy_stars_count = 500
+    @galaxy_stars_count = 250
     @galaxy_gravity_constant = 0.00001
-    @galaxy_joining_distance = 2
-    @galaxy_force_change_distance = 4
     @galaxy_distribution = :unitary  #:unitary, :normal
-    @galaxy_movement = :barnes_hut   #:standard, :barnes_hut
+    @galaxy_movement = :standard   #:standard, :barnes_hut
     @barnes_hut_ratio = 1.0
 
     @galaxy = Galaxy.new(
       @galaxy_size, 
       @galaxy_stars_count, 
       @galaxy_gravity_constant, 
-      @galaxy_force_change_distance, 
       @galaxy_distribution, 
       @barnes_hut_ratio
       )
@@ -33,18 +29,14 @@ class GameWindow < Gosu::Window
   def update
     a = Time.now
     @galaxy.calculate_forces(@galaxy_movement)
-    p 1000 * (Time.now - a)
+    self.caption = 1000 * (Time.now - a)
+
     @galaxy.move_stars
-    @galaxy.join_stars_that_are_closer_than(@galaxy_joining_distance)
   end
   
   def draw
-    scale(@scale, @scale, 0, 0) do
-      translate(@galaxy_size/2, @galaxy_size/2) do
-        # draw_box(@galaxy.box) if @galaxy.box
-        draw_galaxy(@galaxy)
-      end
-    end
+    # draw_box(@galaxy.box) if @galaxy.box
+    draw_galaxy(@galaxy)
   end
 end
 
