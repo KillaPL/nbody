@@ -1,6 +1,5 @@
 TODO:
-1. Code cleanup
-2. Constants class, move repeating constants there
-3. Write benchark for galaxy creating and calculating forces
-4. Change some fields to integers, should be a lot faster
-5. try using jruby + multithreading
+1. Write and use Vector class to store 2 dimensional vectors. Later maybe will be moved to 3 dimensions.
+2. Move movement counting code to seperate classes EngineBrute and EngineBarnesHut. Make them return MovementStore object.
+3. Write MovementStore class that will be used as maatrix of temporary movement counting, and will be used as bridge between kernels and galaxy.
+4. Do the same in c++.

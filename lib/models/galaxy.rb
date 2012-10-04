@@ -4,7 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + "/box.rb")
 class Galaxy
   attr_accessor :stars, :box
 
-  def initialize(size, stars_count, gravity_constant, stars_distribution, barnes_hut_ratio)
+  def initialize(size, stars_count, gravity_constant, barnes_hut_ratio)
     @size_x = size
     @size_y = size
     @gravity_constant = gravity_constant
@@ -13,7 +13,7 @@ class Galaxy
     @stars = []
     
     stars_count.times do |i|
-      @stars << Star.generate_random(@size_x, @size_y, stars_distribution)
+      @stars << Star.generate_random(@size_x, @size_y)
     end
   end
 
@@ -34,7 +34,6 @@ class Galaxy
       force_y = force * (star_1.y - star_2.y) / distance
       star_1.update_acceleration(-force_x, -force_y)
       star_2.update_acceleration(force_x, force_y)
-    else
     end
   end
 

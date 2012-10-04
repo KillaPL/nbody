@@ -13,17 +13,11 @@ class Star
   end
 
   def self.generate_random(galaxy_size_x, galaxy_size_y, distribution)
-    case distribution
-    when :unitary
-      random_x = galaxy_size_x * rand
-      random_y = galaxy_size_y * rand
-    when :normal
-      u = rand
-      v = rand
-      random_x = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * 3.1415926 * v) * galaxy_size_x / 5.0
-      random_y = Math.sqrt(-2 * Math.log(u)) * Math.sin(2 * 3.1415926 * v) * galaxy_size_y / 5.0
-    end
-    new(random_x, random_y, Math.exp(10 * rand))
+    random_x = galaxy_size_x * rand
+    random_y = galaxy_size_y * rand
+    random_mass = Math.exp(10 * rand)
+    
+    new(random_x, random_y, random_mass)
   end
 
   def +(another_star)
@@ -39,7 +33,7 @@ class Star
     @ax += force_x / mass
     @ay += force_y / mass
   end
-
+  
   def move
     @vx += @ax
     @vy += @ay
