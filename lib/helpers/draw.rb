@@ -7,10 +7,10 @@ module Draw
 
   def draw_star(star)
     draw_quad(
-      star.x,             star.y,             0xffffffff, 
-      star.x + star.size, star.y,             0xffffffff, 
-      star.x + star.size, star.y + star.size, 0xffffffff, 
-      star.x,             star.y + star.size, 0xffffffff, 
+      star.position.a,             star.position.b,             0xffffffff, 
+      star.position.a + star.size, star.position.b,             0xffffffff, 
+      star.position.a + star.size, star.position.b + star.size, 0xffffffff, 
+      star.position.a,             star.position.b + star.size, 0xffffffff, 
       )
   end
 

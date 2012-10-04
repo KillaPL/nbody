@@ -9,8 +9,8 @@ class GameWindow < Gosu::Window
     @window_x = 1000
     @window_y = 1000
     @galaxy_size = 1000
-    @galaxy_stars_count = 20
-    @galaxy_gravity_constant = 0.0001
+    @galaxy_stars_count = 200
+    @galaxy_gravity_constant = 0.000001
     @galaxy_movement = :standard   #:standard, :barnes_hut
     @barnes_hut_ratio = 1.0
 
